@@ -20,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,7 +73,10 @@ public class StavaGoalsMain extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        AnimationUtils anim_utils = new AnimationUtils();
+        Animation btn_rotation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.strava_anims);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,6 +84,7 @@ public class StavaGoalsMain extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "yay", Toast.LENGTH_SHORT).show();
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 //        .setAction("Action", null).show();
+                fab.animate().rotationBy(360);
                 AsyncHttpClient client = new AsyncHttpClient();
                 client.addHeader("Authorization:", "Bearer " + GoalData.auth_key);
 

@@ -5,8 +5,8 @@ package com.ashnayar.stravagoals;
  */
 public class GoalData {
 
-    public static String strava_id = "";
-    public static String auth_key =  "";
+    public static String strava_id = ""; // Fill in strava user id
+    public static String auth_key =  ""; // Fill in api key from strava
     public static double miles_to_km = 1.60934;
     public static double miles_to_meters = 1609.344;
     public static double km_to_miles = 0.621371;
