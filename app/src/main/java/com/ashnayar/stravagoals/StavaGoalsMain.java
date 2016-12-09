@@ -43,12 +43,18 @@ public class StavaGoalsMain extends AppCompatActivity {
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    private Athlete athlete;
+    private Athlete athlete=null;
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +81,7 @@ public class StavaGoalsMain extends AppCompatActivity {
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
+        final TextView time_txt = (TextView) findViewById(R.id.cycling_time_update);
         AnimationUtils anim_utils = new AnimationUtils();
         Animation btn_rotation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.strava_anims);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +104,8 @@ public class StavaGoalsMain extends AppCompatActivity {
                         try {
                             String tmp = new String(bytes, "UTF-8");
                             athlete = new Athlete(tmp);
+                            Log.d("smashyTime", athlete.getUpdatedTime());
+
                             mSectionsPagerAdapter.notifyDataSetChanged();
                             Toast.makeText(getApplicationContext(), String.valueOf("Status updated!"), Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {

@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,10 +34,11 @@ public class Cycling extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    double ride_diff, ride_goal, ride_current;
+    private String time_update = "";
+    double ride_diff, ride_goal, ride_current, next_week_diff;
     private Athlete athlete;
     private OnFragmentInteractionListener mListener;
-
+    String daily_average, current_week, next_week;
     public Cycling() {
         // Required empty public constructor
     }
@@ -54,6 +57,12 @@ public class Cycling extends Fragment {
         args.putDouble("ride_goal",a.getCycleGoal());
         args.putDouble("ride_current",a.getYtd_ride());
         args.putDouble("ride_diff", a.getRideDiff());
+        args.putDouble("next_week_diff", a.getNextWeekRideDiff());
+        args.putString("update_time", a.getUpdatedTime());
+        args.putString("daily_average",a.getDailyAverage());
+        args.putString("current_week",Athlete.getCurrentWeek());
+        args.putString("next_week", Athlete.getNextWeek());
+
         fragment.setArguments(args);
 
         return fragment;
@@ -66,6 +75,11 @@ public class Cycling extends Fragment {
             ride_goal = getArguments().getDouble("ride_goal");
             ride_current = getArguments().getDouble("ride_current");
             ride_diff = getArguments().getDouble("ride_diff");
+            next_week_diff = getArguments().getDouble("next_week_diff");
+            time_update = getArguments().getString("update_time");
+            daily_average = getArguments().getString("daily_average");
+            current_week = getArguments().getString("current_week");
+            next_week = getArguments().getString("next_week");
             Log.e("smashyGoal", String.valueOf(ride_goal));
         }
 
@@ -80,16 +94,34 @@ public class Cycling extends Fragment {
         TextView goal_txt = (TextView) root_view.findViewById(R.id.goal_cycling);
         TextView current_txt = (TextView) root_view.findViewById(R.id.current_cycling);
         TextView diff_txt = (TextView) root_view.findViewById(R.id.diff_cycling);
+        TextView next_diff = (TextView) root_view.findViewById(R.id.next_week_diff);
+        TextView time_txt = (TextView) root_view.findViewById(R.id.cycling_time_update);
+        TextView current_week_txt = (TextView)root_view.findViewById(R.id.current_week_txt);
+        TextView next_week_txt = (TextView)root_view.findViewById(R.id.next_week_txt);
+        TextView days_remain_txt = (TextView)root_view.findViewById(R.id.days_remaining);
+        TextView avg_txt =  (TextView)root_view.findViewById(R.id.avg_per_day_txt);
 
         goal_txt.setText(Athlete.formatDistance(ride_goal));
         current_txt.setText(Athlete.formatDistance(ride_current));
         diff_txt.setText(Athlete.formatDistance(ride_diff));
+        next_diff.setText(Athlete.formatDistance(next_week_diff));
+        current_week_txt.setText("Week "+current_week);
+        next_week_txt.setText("Week "+next_week);
+        time_txt.setText(time_update);
+        days_remain_txt.setText("Days Remaining: "+Athlete.getDaysRemaining());
+        avg_txt.setText(daily_average);
+
         if(ride_diff >=0){
             diff_txt.setTextColor(Color.GREEN);
         }else{
             diff_txt.setTextColor(Color.RED);
         }
 
+        if(next_week_diff >=0){
+            next_diff.setTextColor(Color.GREEN);
+        }else{
+            next_diff.setTextColor(Color.RED);
+        }
 
         return root_view;
     }
@@ -120,14 +152,18 @@ public class Cycling extends Fragment {
         TextView goal_txt = (TextView) root_view.findViewById(R.id.goal_cycling);
         TextView current_txt = (TextView) root_view.findViewById(R.id.current_cycling);
         TextView diff_txt = (TextView) root_view.findViewById(R.id.diff_cycling);
+        TextView update_txt = (TextView) root_view.findViewById(R.id.cycling_time_update);
 
         ride_goal = a.getCycleGoal();
         ride_current = a.getYtd_ride();
         ride_diff = a.getRideDiff();
-
+        time_update = a.getUpdatedTime();
+        Log.d("smashyTime", time_update);
         goal_txt.setText(Athlete.formatDistance(ride_goal));
         current_txt.setText(Athlete.formatDistance(ride_current));
         diff_txt.setText(Athlete.formatDistance(ride_diff));
+        update_txt.setText(time_update);
+
         if(ride_diff >=0){
             diff_txt.setTextColor(Color.GREEN);
         }else{

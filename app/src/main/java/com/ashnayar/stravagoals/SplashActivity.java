@@ -45,7 +45,7 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-
+                Log.e("smashy", "Failed??!?!");
             }
         };
         String url = "https://www.strava.com/api/v3/athletes/" + GoalData.strava_id + "/stats";
